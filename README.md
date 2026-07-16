@@ -90,14 +90,17 @@ We use a standard `Makefile` to streamline daily operations:
 
 This orchestrator is optimized for deployment on Vercel as a Serverless Function.
 
-1. Ensure your `.env` variables are uploaded to your Vercel Project settings.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/emfhal/dexo&env=OPENAI_API_KEY,ANTHROPIC_API_KEY,GEMINI_API_KEY,DATABASE_URL)
+
+1. Ensure your `.env` variables are uploaded to your Vercel Project settings (including your `GEMINI_API_KEY`).
 2. We highly recommend turning off `LOG_PRETTY` in production so logs are streamed as structured JSON:
    ```env
    LOG_PRETTY=false
    LOG_LEVEL=INFO
    ```
-3. Deploy!
+3. Link your project from Vercel and deploy!
    ```bash
+   vercel link
    vercel --prod
    ```
 
