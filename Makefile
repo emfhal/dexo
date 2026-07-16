@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  LangGraph Agent v2 — Makefile (uv-first)
+#  Dexo — Makefile (uv-first)
 #  All Python commands run inside `uv run` so no manual venv activation needed.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -21,7 +21,7 @@ RESET := \033[0m
 # ── Help ──────────────────────────────────────────────────────────────────────
 help: ## Show this help message
 	@echo ""
-	@echo "  LangGraph Agent v2 — uv-native commands"
+	@echo "  Dexo — uv-native commands"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	  | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(CYAN)%-22s$(RESET) %s\n", $$1, $$2}'

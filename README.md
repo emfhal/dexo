@@ -1,4 +1,4 @@
-# Enterprise LangGraph Orchestrator (V2)
+# Dexo - Enterprise LangGraph Orchestrator
 
 A robust, frontier-grade multi-agent architecture powered by LangGraph, FastAPI, and OpenTelemetry. Designed for high scalability, observability, and modular tool integration. The codebase follows standard Python packaging (`src/` layout) and is deployment-ready for Vercel Serverless Functions.
 
@@ -67,12 +67,12 @@ We use a standard `Makefile` to streamline daily operations:
 ## 🏗️ Project Structure
 
 ```text
-/v2
+/
 ├── /api
 │   └── index.py            # Vercel Serverless Function entrypoint
 ├── /src                    # Core python package
 │   ├── /assets             # Prompts, rules (AGENTS.md), skills, and MCP configs
-│   ├── /config.py          # Pydantic v2 BaseSettings
+│   ├── /config.py          # Pydantic BaseSettings
 │   ├── /context            # Context loaders for assets, rules, and MCP
 │   ├── /graph              # LangGraph nodes, state definitions, and builder
 │   ├── /main.py            # FastAPI Application
