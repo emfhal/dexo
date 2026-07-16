@@ -1,0 +1,69 @@
+services:
+
+  # ── Postgres (LangGraph Checkpointer + pgvector) ────────────────────────────
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: agent
+      POSTGRES_PASSWORD: agent_secret
+      POSTGRES_DB: agent_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agent -d agent_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Zep (Long-term semantic memory) ─────────────────────────────────────────
+  zep:
+    image: ghcr.io/getzep/zep:latest
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ZEP_STORE_TYPE: postgres
+      ZEP_STORE_POSTGRES_DSN: postgres://agent:agent_secret@postgres:5432/agent_db
+      ZEP_AUTH_REQUIRED: "false"          # set "true" + ZEP_AUTH_SECRET in prod
+      ZEP_OPENAI_API_KEY: "dummy"
+    ports:
+      - "8010:8000"
+#
+#  # ── Ollama (local LLM: gemma3:27b, llama3.2…) ────────────────────────────────
+#  ollama:
+#    image: ollama/ollama:latest
+#    restart: unless-stopped
+#    ports:
+#      - "11434:11434"
+#    volumes:
+#      - ollama_data:/root/.ollama
+#    # Pull models on first boot
+#    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull gemma3:27b && ollama pull nomic-embed-text && wait"]
+
+  # ── Jaeger (OTEL traces UI) ──────────────────────────────────────────────────
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    restart: unless-stopped
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP gRPC receiver
+      - "4318:4318"     # OTLP HTTP receiver
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+
+#  # ── Prometheus (metrics scraping) ────────────────────────────────────────────
+#  prometheus:
+#    image: prom/prometheus:latest
+#    restart: unless-stopped
+#    ports:
+#      - "9090:9090"
+#    volumes:
+#      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+volumes:
+  pg_data:
+  ollama_data:

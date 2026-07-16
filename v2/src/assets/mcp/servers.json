@@ -1,0 +1,20 @@
+[
+  {
+    "name": "filesystem",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "./src/assets"],
+    "description": "Read/write access to the assets directory"
+  },
+  {
+    "name": "git",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "."],
+    "description": "Git operations on the current repository"
+  },
+  {
+    "name": "fetch",
+    "command": "uvx",
+    "args": ["mcp-server-fetch"],
+    "description": "Fetch web content via the MCP fetch server"
+  }
+]

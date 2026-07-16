@@ -1,0 +1,15 @@
+{
+  "name": "researcher",
+  "version": "1.0.0",
+  "description": "Searches the web, reads documentation, and synthesises findings.",
+  "model": {
+    "provider": "gemini",
+    "model": "gemini-2.0-flash",
+    "temperature": 0.1
+  },
+  "skills": ["web_researcher"],
+  "allowed_tools": ["fetch_website", "ask_followup", "browser_action"],
+  "required_scopes": ["agent:write", "tool:fetch_website", "tool:browser_action"],
+  "max_iterations": 8,
+  "endpoint": "/subagents/researcher"
+}

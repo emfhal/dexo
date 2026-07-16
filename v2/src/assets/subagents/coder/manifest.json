@@ -1,0 +1,16 @@
+{
+  "name": "coder",
+  "version": "1.0.0",
+  "description": "Writes, debugs, and executes code across Python, JS, and shell.",
+  "model": {
+    "provider": "ollama",
+    "model": "gemma4:27b",
+    "temperature": 0.0,
+    "options": { "num_ctx": 32768 }
+  },
+  "skills": ["code_executor"],
+  "allowed_tools": ["run_command", "read_skill", "ask_followup"],
+  "required_scopes": ["agent:write", "tool:run_command"],
+  "max_iterations": 15,
+  "endpoint": "/subagents/coder"
+}
