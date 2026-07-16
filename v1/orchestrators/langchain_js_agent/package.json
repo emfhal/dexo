@@ -1,0 +1,14 @@
+{
+  "name": "langchain-js-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "fastify": "^4.26.2",
+    "@langchain/core": "^0.2.0",
+    "@langchain/openai": "^0.2.0"
+  }
+}

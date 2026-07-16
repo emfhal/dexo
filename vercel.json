@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "services": [
+    {
+      "src": "orchestrators/vercel_ai_agent",
+      "framework": "fastify"
+    },
+    {
+      "src": "orchestrators/genkit_agent",
+      "framework": "fastify"
+    },
+    {
+      "src": "subagents/langchain_js_agent",
+      "framework": "fastify"
+    },
+    {
+      "src": "orchestrators/langchain_agent",
+      "entrypoint": "main:app"
+    },
+    {
+      "src": "orchestrators/crewai_agent",
+      "entrypoint": "main:app"
+    },
+    {
+      "src": "mcp/local_server",
+      "framework": "fastify"
+    }
+  ],
+  "bindings": [
+    {
+      "service": "orchestrators/vercel_ai_agent",
+      "name": "LANGCHAIN_AGENT_URL",
+      "target": "orchestrators/langchain_agent"
+    },
+    {
+      "service": "orchestrators/vercel_ai_agent",
+      "name": "CREWAI_AGENT_URL",
+      "target": "orchestrators/crewai_agent"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/vercel-ai/(.*)",
+      "destination": "orchestrators/vercel_ai_agent/$1"
+    },
+    {
+      "source": "/api/langchain/(.*)",
+      "destination": "orchestrators/langchain_agent/$1"
+    }
+  ]
+}

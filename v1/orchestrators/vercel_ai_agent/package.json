@@ -1,0 +1,14 @@
+{
+  "name": "vercel-ai-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "fastify": "^4.26.2",
+    "ai": "^3.0.0",
+    "@ai-sdk/openai": "^0.0.10"
+  }
+}
