@@ -115,11 +115,12 @@ This orchestrator is optimized for deployment on Vercel as a Serverless Function
 We love contributions! Whether it's a bug report, a new feature, or a documentation improvement, we welcome all forms of contributions from the community. 
 
 To get started:
-1. Fork the repository
-2. Create a feature branch prefixed with the issue number (e.g., `git checkout -b DEXO-1-amazing-feature`)
-3. Commit your changes with the issue prefix (e.g., `git commit -m 'DEXO-1 - Add amazing feature'`)
-4. Push to the branch (e.g., `git push origin DEXO-1-amazing-feature`)
-5. Open a Pull Request referencing the original issue (e.g., `https://github.com/emfhal/dexo/issues/1`)
+1. **Open an Issue**: Before writing code, open an issue to discuss your changes and receive an issue number (e.g., Issue #1). This number is required for your branch and commit prefixes.
+2. Fork the repository
+3. Create a feature branch prefixed with your issue number (e.g., `git checkout -b DEXO-1-amazing-feature`)
+4. Commit your changes with the issue prefix (e.g., `git commit -m 'DEXO-1 - Add amazing feature'`)
+5. Push to the branch (e.g., `git push origin DEXO-1-amazing-feature`)
+6. Open a Pull Request referencing the original issue (e.g., `https://github.com/emfhal/dexo/issues/1`)
 
 Please ensure your code passes all linting (`make lint`) and tests (`make test`) before opening a PR. Check out our [Contributing Guidelines](CONTRIBUTING.md) if you need more details.
 
