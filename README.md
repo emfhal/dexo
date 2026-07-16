@@ -109,3 +109,20 @@ This orchestrator is optimized for deployment on Vercel as a Serverless Function
 - **Pre-push hooks**: Ensure type checking (`mypy`), linting (`ruff`), and testing coverage pass before any code is pushed to production.
 - **SSRF Prevention**: `fetch_website` prevents requests resolving to internal networks (CIDR blocks configurable in `.env`).
 - **Command Safety**: The shell command tool operates on a strict allowlist. It is impossible for the orchestrator to arbitrarily execute unverified binaries.
+
+## 🤝 Contributing
+
+We love contributions! Whether it's a bug report, a new feature, or a documentation improvement, we welcome all forms of contributions from the community. 
+
+To get started:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code passes all linting (`make lint`) and tests (`make test`) before opening a PR. Check out our [Contributing Guidelines](CONTRIBUTING.md) if you need more details.
+
+## 📜 License
+
+This project is open-source and licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.

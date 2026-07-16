@@ -8,7 +8,7 @@ version = "2.0.0"
 description = "Production-grade LangGraph agent — multi-provider, hybrid memory, full observability"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 
 dependencies = [
     # ── LangChain / LangGraph ────────────────────────────────────────────────
