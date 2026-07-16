@@ -73,7 +73,7 @@ def bootstrap_otel(cfg: ObservabilityConfig) -> None:
         logger.warning("openinference-instrumentation-langchain not installed — skipping.")
 
     # ── Optional: Arize Phoenix ───────────────────────────────────────────────
-    if cfg.phoenix_api_key:
+    if getattr(cfg, "phoenix_api_key", None):
         try:
             import phoenix as px
 

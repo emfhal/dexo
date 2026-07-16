@@ -66,7 +66,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     log.info("MemoryManager ready.")
 
     # 3. Context loader warm-up (pre-loads rules, skills, MCP tools)
-    app_state.context_loader = AdvancedContextLoader(cfg.context, app_state.memory)
+    app_state.context_loader = AdvancedContextLoader(cfg.assets, app_state.memory)
     await app_state.context_loader.warm_up()
     log.info("ContextLoader warmed up.")
 
@@ -126,7 +126,7 @@ class ResumeRequest(BaseModel):
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
-@app.post("/chat")
+@app.post("/chat", response_model=None)
 async def chat(
     body: ChatRequest,
     rbac: Annotated[RBACContext, Depends(get_current_user)],
