@@ -153,6 +153,12 @@ As you make changes, ensure your commit messages also follow the strict prefix c
 git commit -m "DEXO-1 - Add amazing feature"
 ```
 
+**Regex Validation:**
+If you configure a local git hook (like `commit-msg`), you can use the following regular expression to validate your commit messages:
+```regex
+^DEXO-\d+ - .+$
+```
+
 ### 4. Testing and Linting
 
 Before opening a Pull Request, you must ensure your code passes all formatting, linting, and testing checks. Our `Makefile` provides commands for this:
