@@ -126,12 +126,12 @@ class ResumeRequest(BaseModel):
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
-@app.post("/chat", response_model=ChatResponse)
+@app.post("/chat")
 async def chat(
     body: ChatRequest,
     rbac: Annotated[RBACContext, Depends(get_current_user)],
     request: Request,
-) -> ChatResponse:
+) -> ChatResponse | StreamingResponse:
     """Main src invocation endpoint."""
     rbac.require("src:write")
 
@@ -147,6 +147,24 @@ async def chat(
 
     config = {"configurable": {"thread_id": thread_id}}
 
+    if body.stream:
+        async def event_generator():
+            try:
+                async for event in app_state.graph.astream(initial_state, config=config, stream_mode="updates"):
+                    # Yield as Server-Sent Event
+                    import json
+                    # We might yield dict directly, but must ensure it's serializable
+                    # For simplicity, convert event to a string representation or custom json
+                    # We'll yield raw string events for now
+                    yield f"data: {json.dumps(str(event))}\n\n"
+            except Exception as exc:
+                log.error("Streaming failed", error=str(exc), thread_id=thread_id)
+                yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(event_generator(), media_type="text/event-stream")
+
+    # Blocking mode
     try:
         result = await app_state.graph.ainvoke(initial_state, config=config)
     except Exception as exc:
