@@ -653,6 +653,121 @@ wheels = [
 ]
 
 [[package]]
+name = "dexo"
+version = "2.0.0"
+source = { editable = "." }
+dependencies = [
+    { name = "anyio" },
+    { name = "beautifulsoup4" },
+    { name = "fastapi" },
+    { name = "httpx" },
+    { name = "jinja2" },
+    { name = "langchain" },
+    { name = "langchain-anthropic" },
+    { name = "langchain-community" },
+    { name = "langchain-core" },
+    { name = "langchain-google-genai" },
+    { name = "langchain-ollama" },
+    { name = "langchain-openai" },
+    { name = "langgraph" },
+    { name = "langgraph-checkpoint-postgres" },
+    { name = "markdownify" },
+    { name = "mcp" },
+    { name = "mem0ai" },
+    { name = "openinference-instrumentation-langchain" },
+    { name = "opentelemetry-api" },
+    { name = "opentelemetry-exporter-otlp-proto-grpc" },
+    { name = "opentelemetry-instrumentation-asyncpg" },
+    { name = "opentelemetry-instrumentation-fastapi" },
+    { name = "opentelemetry-instrumentation-httpx" },
+    { name = "opentelemetry-sdk" },
+    { name = "passlib", extra = ["bcrypt"] },
+    { name = "pgvector" },
+    { name = "playwright" },
+    { name = "psycopg", extra = ["binary", "pool"] },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "python-dotenv" },
+    { name = "python-jose", extra = ["cryptography"] },
+    { name = "pyyaml" },
+    { name = "structlog" },
+    { name = "tenacity" },
+    { name = "tiktoken" },
+    { name = "uvicorn", extra = ["standard"] },
+    { name = "zep-python" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "ipython" },
+    { name = "mypy" },
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-mock" },
+    { name = "respx" },
+    { name = "rich" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "anyio", specifier = ">=4.4.0" },
+    { name = "beautifulsoup4", specifier = ">=4.12.0" },
+    { name = "fastapi", specifier = ">=0.115.0" },
+    { name = "httpx", specifier = ">=0.27.0" },
+    { name = "jinja2", specifier = ">=3.1.0" },
+    { name = "langchain", specifier = ">=0.3.0" },
+    { name = "langchain-anthropic", specifier = ">=0.3.0" },
+    { name = "langchain-community", specifier = ">=0.3.0" },
+    { name = "langchain-core", specifier = ">=0.3.0" },
+    { name = "langchain-google-genai", specifier = ">=2.0.0" },
+    { name = "langchain-ollama", specifier = ">=0.2.0" },
+    { name = "langchain-openai", specifier = ">=0.2.0" },
+    { name = "langgraph", specifier = ">=0.2.0" },
+    { name = "langgraph-checkpoint-postgres", specifier = ">=2.0.0" },
+    { name = "markdownify", specifier = ">=0.13.0" },
+    { name = "mcp", specifier = ">=1.0.0" },
+    { name = "mem0ai", specifier = ">=0.1.0" },
+    { name = "openinference-instrumentation-langchain", specifier = ">=0.1.0" },
+    { name = "opentelemetry-api", specifier = ">=1.26.0" },
+    { name = "opentelemetry-exporter-otlp-proto-grpc", specifier = ">=1.26.0" },
+    { name = "opentelemetry-instrumentation-asyncpg", specifier = ">=0.47b0" },
+    { name = "opentelemetry-instrumentation-fastapi", specifier = ">=0.47b0" },
+    { name = "opentelemetry-instrumentation-httpx", specifier = ">=0.47b0" },
+    { name = "opentelemetry-sdk", specifier = ">=1.26.0" },
+    { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
+    { name = "pgvector", specifier = ">=0.3.0" },
+    { name = "playwright", specifier = ">=1.40.0" },
+    { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.1.0" },
+    { name = "pydantic", specifier = ">=2.8.0" },
+    { name = "pydantic-settings", specifier = ">=2.4.0" },
+    { name = "python-dotenv", specifier = ">=1.0.0" },
+    { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
+    { name = "pyyaml", specifier = ">=6.0.0" },
+    { name = "structlog", specifier = ">=24.0.0" },
+    { name = "tenacity", specifier = ">=9.0.0" },
+    { name = "tiktoken", specifier = ">=0.7.0" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.30.0" },
+    { name = "zep-python", specifier = ">=2.0.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "ipython", specifier = ">=8.0.0" },
+    { name = "mypy", specifier = ">=1.11.0" },
+    { name = "pre-commit", specifier = ">=3.8.0" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", specifier = ">=0.23.0" },
+    { name = "pytest-cov", specifier = ">=5.0.0" },
+    { name = "pytest-mock", specifier = ">=3.14.0" },
+    { name = "respx", specifier = ">=0.21.0" },
+    { name = "rich", specifier = ">=13.0.0" },
+    { name = "ruff", specifier = ">=0.6.0" },
+]
+
+[[package]]
 name = "distlib"
 version = "0.4.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1470,121 +1585,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/41/4b/0d1130e26b41a99dcc88353bbe7162a1f255c4db746bd94024268e6af27b/langgraph-1.2.9.tar.gz", hash = "sha256:385f87bc1802c35af7e0aa479278ecba8582d103515eb48256cb2ddcd42d0bd4", size = 722869, upload-time = "2026-07-10T01:30:14.985Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/41/16/0b8dc48823f1326f3e0c8012a3c07a40da6f194299e2ec080df236287baf/langgraph-1.2.9-py3-none-any.whl", hash = "sha256:c2d98ad94333937922ba04148641c1da2bfe45b5b8e55d7b6dcb0bb2df809e76", size = 247473, upload-time = "2026-07-10T01:30:13.733Z" },
-]
-
-[[package]]
-name = "langgraph-agent"
-version = "2.0.0"
-source = { editable = "." }
-dependencies = [
-    { name = "anyio" },
-    { name = "beautifulsoup4" },
-    { name = "fastapi" },
-    { name = "httpx" },
-    { name = "jinja2" },
-    { name = "langchain" },
-    { name = "langchain-anthropic" },
-    { name = "langchain-community" },
-    { name = "langchain-core" },
-    { name = "langchain-google-genai" },
-    { name = "langchain-ollama" },
-    { name = "langchain-openai" },
-    { name = "langgraph" },
-    { name = "langgraph-checkpoint-postgres" },
-    { name = "markdownify" },
-    { name = "mcp" },
-    { name = "mem0ai" },
-    { name = "openinference-instrumentation-langchain" },
-    { name = "opentelemetry-api" },
-    { name = "opentelemetry-exporter-otlp-proto-grpc" },
-    { name = "opentelemetry-instrumentation-asyncpg" },
-    { name = "opentelemetry-instrumentation-fastapi" },
-    { name = "opentelemetry-instrumentation-httpx" },
-    { name = "opentelemetry-sdk" },
-    { name = "passlib", extra = ["bcrypt"] },
-    { name = "pgvector" },
-    { name = "playwright" },
-    { name = "psycopg", extra = ["binary", "pool"] },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "python-dotenv" },
-    { name = "python-jose", extra = ["cryptography"] },
-    { name = "pyyaml" },
-    { name = "structlog" },
-    { name = "tenacity" },
-    { name = "tiktoken" },
-    { name = "uvicorn", extra = ["standard"] },
-    { name = "zep-python" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "ipython" },
-    { name = "mypy" },
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-mock" },
-    { name = "respx" },
-    { name = "rich" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "anyio", specifier = ">=4.4.0" },
-    { name = "beautifulsoup4", specifier = ">=4.12.0" },
-    { name = "fastapi", specifier = ">=0.115.0" },
-    { name = "httpx", specifier = ">=0.27.0" },
-    { name = "jinja2", specifier = ">=3.1.0" },
-    { name = "langchain", specifier = ">=0.3.0" },
-    { name = "langchain-anthropic", specifier = ">=0.3.0" },
-    { name = "langchain-community", specifier = ">=0.3.0" },
-    { name = "langchain-core", specifier = ">=0.3.0" },
-    { name = "langchain-google-genai", specifier = ">=2.0.0" },
-    { name = "langchain-ollama", specifier = ">=0.2.0" },
-    { name = "langchain-openai", specifier = ">=0.2.0" },
-    { name = "langgraph", specifier = ">=0.2.0" },
-    { name = "langgraph-checkpoint-postgres", specifier = ">=2.0.0" },
-    { name = "markdownify", specifier = ">=0.13.0" },
-    { name = "mcp", specifier = ">=1.0.0" },
-    { name = "mem0ai", specifier = ">=0.1.0" },
-    { name = "openinference-instrumentation-langchain", specifier = ">=0.1.0" },
-    { name = "opentelemetry-api", specifier = ">=1.26.0" },
-    { name = "opentelemetry-exporter-otlp-proto-grpc", specifier = ">=1.26.0" },
-    { name = "opentelemetry-instrumentation-asyncpg", specifier = ">=0.47b0" },
-    { name = "opentelemetry-instrumentation-fastapi", specifier = ">=0.47b0" },
-    { name = "opentelemetry-instrumentation-httpx", specifier = ">=0.47b0" },
-    { name = "opentelemetry-sdk", specifier = ">=1.26.0" },
-    { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7.4" },
-    { name = "pgvector", specifier = ">=0.3.0" },
-    { name = "playwright", specifier = ">=1.40.0" },
-    { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.1.0" },
-    { name = "pydantic", specifier = ">=2.8.0" },
-    { name = "pydantic-settings", specifier = ">=2.4.0" },
-    { name = "python-dotenv", specifier = ">=1.0.0" },
-    { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3.0" },
-    { name = "pyyaml", specifier = ">=6.0.0" },
-    { name = "structlog", specifier = ">=24.0.0" },
-    { name = "tenacity", specifier = ">=9.0.0" },
-    { name = "tiktoken", specifier = ">=0.7.0" },
-    { name = "uvicorn", extras = ["standard"], specifier = ">=0.30.0" },
-    { name = "zep-python", specifier = ">=2.0.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "ipython", specifier = ">=8.0.0" },
-    { name = "mypy", specifier = ">=1.11.0" },
-    { name = "pre-commit", specifier = ">=3.8.0" },
-    { name = "pytest", specifier = ">=8.0.0" },
-    { name = "pytest-asyncio", specifier = ">=0.23.0" },
-    { name = "pytest-cov", specifier = ">=5.0.0" },
-    { name = "pytest-mock", specifier = ">=3.14.0" },
-    { name = "respx", specifier = ">=0.21.0" },
-    { name = "rich", specifier = ">=13.0.0" },
-    { name = "ruff", specifier = ">=0.6.0" },
 ]
 
 [[package]]
