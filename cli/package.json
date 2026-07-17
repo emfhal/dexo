@@ -1,6 +1,6 @@
 {
   "name": "@emfhal/dexo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "NPM CLI wrapper for Dexo LangGraph Agent",
   "type": "module",
   "main": "index.js",
