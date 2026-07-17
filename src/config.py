@@ -18,7 +18,7 @@ import tomllib
 from functools import lru_cache
 from ipaddress import IPv4Network
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -26,9 +26,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # ─────────────────────────────────────────────────────────────────────────────
 #  Sub-configs
 # ─────────────────────────────────────────────────────────────────────────────
-
-
-from typing import Any
 
 def _load_project_metadata() -> dict[str, Any]:
     path = Path(__file__).parent.parent / "pyproject.toml"
