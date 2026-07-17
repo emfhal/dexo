@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Transparent background -->
+  <!-- "DX" Interlocking Logo -->
+  <g fill="none" stroke="black" stroke-width="24" stroke-linejoin="miter">
+    <!-- The D -->
+    <path d="M 40 40 L 90 40 C 130 40, 130 160, 90 160 L 40 160 Z" />
+    <!-- The X -->
+    <path d="M 90 40 L 160 160" />
+    <path d="M 160 40 L 90 160" />
+  </g>
+</svg>

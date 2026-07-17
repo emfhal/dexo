@@ -18,6 +18,14 @@ program
   .description('Start a conversation with the Dexo agent')
   .requiredOption('-u, --user <prompt>', 'The prompt to send to the agent')
   .action(async (options) => {
+    console.log(`
+  _____   __   __
+ |  __ \\  \\ \\ / /
+ | |  | |  \\ V / 
+ | |  | |   > <  
+ | |__| |  / . \\ 
+ |_____/  /_/ \\_\\
+    `);
     try {
       const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',

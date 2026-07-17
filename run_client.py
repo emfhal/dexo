@@ -14,6 +14,14 @@ from src.security.jwt import JWTService
 
 
 async def main():
+    print(r"""
+  _____   __   __
+ |  __ \  \ \ / /
+ | |  | |  \ V / 
+ | |  | |   > <  
+ | |__| |  / . \ 
+ |_____/  /_/ \_\
+    """)
     parser = argparse.ArgumentParser(description="Dexo CLI Client")
     parser.add_argument("prompt", type=str, help="The prompt to send to the agent")
     parser.add_argument("--thread-id", type=str, default=str(uuid.uuid4()), help="Thread ID for the conversation")

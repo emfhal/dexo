@@ -1,5 +1,9 @@
 # Dexo - Enterprise LangGraph Orchestrator
 
+<div align="center">
+  <img src="./assets/logo.svg" width="200" alt="Dexo Logo" />
+</div>
+
 A robust, frontier-grade multi-agent architecture powered by LangGraph, FastAPI, and OpenTelemetry. Designed for high scalability, observability, and modular tool integration. The codebase follows standard Python packaging (`src/` layout) and is deployment-ready for Vercel Serverless Functions.
 
 ## 🚀 Features
