@@ -54,6 +54,13 @@ dev-prod: ## Run FastAPI in production mode (no reload)
 	  --host 0.0.0.0 --port 8080 \
 	  --workers 4 --log-level info
 
+# ── Local Clients ─────────────────────────────────────────────────────────────
+cli: ## Run the interactive CLI agent (usage: make cli PROMPT="hello")
+	$(PYTHON) run_client.py "$(PROMPT)"
+
+test-api: ## Run the API streaming test client
+	$(PYTHON) scripts/test_streaming_api.py
+
 # ── Code quality ──────────────────────────────────────────────────────────────
 lint: ## Run ruff linter (check only)
 	$(RUFF) check src/

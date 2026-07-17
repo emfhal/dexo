@@ -1,4 +1,16 @@
 services:
+  # ── Dexo API (Pull from GHCR) ───────────────────────────────────────────────
+  api:
+    image: ghcr.io/emfhal/dexo:main
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ENVIRONMENT=production
+      - DB_URI=postgres://agent:agent_secret@postgres:5432/agent_db
 
   # ── Postgres (LangGraph Checkpointer + pgvector) ────────────────────────────
   postgres:
