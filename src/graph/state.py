@@ -11,10 +11,9 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from langgraph.graph.message import add_messages
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
-if TYPE_CHECKING:
-    from langchain_core.messages import AnyMessage
+from langchain_core.messages import AnyMessage
 
 
 class Permission(BaseModel):
@@ -107,5 +106,4 @@ class AgentState(BaseModel):
     iteration: int = 0
     max_iterations: int = 10
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
