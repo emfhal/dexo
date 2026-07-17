@@ -21,8 +21,8 @@ ENV UV_LINK_MODE=copy
 ENV UV_SYSTEM_PYTHON=1
 
 # Install dependencies first for better caching
-# Copying only pyproject.toml and uv.lock (if it exists) initially
-COPY pyproject.toml .
+# Copying only pyproject.toml, README.md, and uv.lock (if it exists) initially
+COPY pyproject.toml README.md uv.loc[k] ./
 # We use `uv pip install` with system python or `uv sync`
 RUN uv pip install -e . --system
 
