@@ -60,3 +60,4 @@ agent_db/
 src/assets/scratch/
 logs/
 .system_generated/
+cli/node_modules/
