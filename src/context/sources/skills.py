@@ -5,6 +5,7 @@ Discovers and loads SKILL.md files from a configured skills directory.
 Parses YAML frontmatter for name/description, and returns the full body.
 Only skills whose description matches the current query are injected.
 """
+
 from __future__ import annotations
 
 import logging

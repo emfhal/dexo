@@ -7,11 +7,12 @@ LLM reasoning node.
 - Handles fallback on rate-limit / connection errors with tenacity retry
 - Emits OTEL metrics for token usage and latency
 """
+
 from __future__ import annotations
 
 import logging
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from langchain_core.messages import AIMessage, SystemMessage
 from tenacity import (
@@ -22,7 +23,6 @@ from tenacity import (
 )
 
 from src.config import get_settings
-from src.graph.state import AgentState
 from src.observability.instrumentation import traced_node
 from src.observability.metrics import (
     llm_latency_histogram,
@@ -30,6 +30,9 @@ from src.observability.metrics import (
     llm_tokens_total,
 )
 from src.providers.registry import ProviderRegistry
+
+if TYPE_CHECKING:
+    from src.graph.state import AgentState
 
 logger = logging.getLogger(__name__)
 
@@ -53,18 +56,14 @@ def _build_system_message(state: AgentState) -> SystemMessage:
         parts.append(f"\n## Rules\n{ctx.rules}")
 
     if ctx.skills:
-        skills_text = "\n\n".join(
-            f"### Skill: {name}\n{body}" for name, body in ctx.skills.items()
-        )
+        skills_text = "\n\n".join(f"### Skill: {name}\n{body}" for name, body in ctx.skills.items())
         parts.append(f"\n## Skills\n{skills_text}")
 
     if ctx.conversation_summary:
         parts.append(f"\n## Previous Conversation Summary\n{ctx.conversation_summary}")
 
     if state.retrieved_memories:
-        mem_text = "\n".join(
-            f"- [{m['source']}] {m['content']}" for m in state.retrieved_memories
-        )
+        mem_text = "\n".join(f"- [{m['source']}] {m['content']}" for m in state.retrieved_memories)
         parts.append(f"\n## Relevant Memories\n{mem_text}")
 
     if ctx.mcp_tools:
@@ -72,9 +71,7 @@ def _build_system_message(state: AgentState) -> SystemMessage:
         parts.append(f"\n## Available MCP Tools\n{tool_names}")
 
     if ctx.subagent_definitions:
-        subs = "\n".join(
-            f"- **{s['name']}**: {s['description']}" for s in ctx.subagent_definitions
-        )
+        subs = "\n".join(f"- **{s['name']}**: {s['description']}" for s in ctx.subagent_definitions)
         parts.append(f"\n## Available Subagents\n{subs}")
 
     return SystemMessage(content="\n".join(parts))
@@ -98,20 +95,21 @@ async def llm_node(state: AgentState, tools: list[Any]) -> dict[str, Any]:
 
     try:
         response = await _invoke_with_fallback(llm_with_tools, messages, registry)
-    except Exception as exc:
+    except Exception:
         logger.exception("LLM call failed after all retries.")
         raise
 
     latency_ms = (time.perf_counter() - t0) * 1000
 
     # ── OTEL Metrics ──────────────────────────────────────────────────────────
-    llm_requests_total.add(1, {"provider": provider_info["provider"], "model": provider_info["model"]})
+    llm_requests_total.add(
+        1, {"provider": provider_info["provider"], "model": provider_info["model"]}
+    )
     llm_latency_histogram.record(round(latency_ms, 2), {"provider": provider_info["provider"]})
 
     if hasattr(response, "usage_metadata") and response.usage_metadata:
-        total = (
-            response.usage_metadata.get("input_tokens", 0)
-            + response.usage_metadata.get("output_tokens", 0)
+        total = response.usage_metadata.get("input_tokens", 0) + response.usage_metadata.get(
+            "output_tokens", 0
         )
         llm_tokens_total.add(total, {"provider": provider_info["provider"]})
 

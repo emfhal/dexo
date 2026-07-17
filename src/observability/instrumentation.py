@@ -4,6 +4,7 @@ src/observability/instrumentation.py
 Custom spans and decorators for fine-grained tracing of graph nodes,
 context loading, and memory retrieval.
 """
+
 from __future__ import annotations
 
 import asyncio

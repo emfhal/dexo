@@ -7,11 +7,11 @@ Sandboxed shell command execution.
 - Enforces timeout
 - Strips ANSI escape codes from output
 """
+
 from __future__ import annotations
 
 import re
 import subprocess
-from typing import Any
 
 from langchain_core.tools import tool
 

@@ -4,6 +4,7 @@ src/tools/read_skill.py
 Tool for the src to read its own skill files at runtime.
 Useful for self-inspection and composing skill-based responses.
 """
+
 from __future__ import annotations
 
 from langchain_core.tools import tool
@@ -28,7 +29,4 @@ def read_skill(skill_name: str) -> str:
             return f"# Skill: {skill['name']}\n\n{skill['body']}"
 
     available = [s["name"] for s in skills]
-    return (
-        f"⛔ Skill '{skill_name}' not found. "
-        f"Available skills: {', '.join(available) or 'none'}"
-    )
+    return f"⛔ Skill '{skill_name}' not found. Available skills: {', '.join(available) or 'none'}"

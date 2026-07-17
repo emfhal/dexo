@@ -3,15 +3,17 @@ src/observability/logging.py
 ──────────────────────────────
 Configures structlog for JSON or pretty console output.
 """
+
 import logging
 import sys
 
 import structlog
 
+
 def configure_logging(log_level: str, pretty: bool = True) -> None:
     """Configure standard logging and structlog."""
     level = getattr(logging, log_level.upper(), logging.INFO)
-    
+
     # Configure structlog
     if pretty:
         processors = [
@@ -38,7 +40,7 @@ def configure_logging(log_level: str, pretty: bool = True) -> None:
         logger_factory=structlog.stdlib.LoggerFactory(),
         cache_logger_on_first_use=True,
     )
-    
+
     logging.basicConfig(
         format="%(message)s",
         stream=sys.stdout,

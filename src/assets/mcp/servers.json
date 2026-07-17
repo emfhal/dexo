@@ -16,5 +16,14 @@
     "command": "uvx",
     "args": ["mcp-server-fetch"],
     "description": "Fetch web content via the MCP fetch server"
+  },
+  {
+    "name": "github",
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-github"],
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "replace_with_your_token"
+    },
+    "description": "GitHub repository and issue management"
   }
 ]

@@ -3,14 +3,17 @@ src/providers/anthropic.py
 ──────────────────────────────
 Anthropic / Claude provider adapter.
 """
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.language_models import BaseChatModel
 
 from src.providers.base import LLMProvider
+
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
 
 
 class AnthropicProvider(LLMProvider):

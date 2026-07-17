@@ -3,12 +3,14 @@ src/graph/nodes/auth_test.py
 ───────────────────────────
 Tests for the auth node.
 """
+
 from __future__ import annotations
 
 import pytest
 
-from src.graph.state import AgentState
 from src.graph.nodes.auth import auth_node
+from src.graph.state import AgentState
+
 
 def test_auth_node_no_token() -> None:
     state = AgentState(raw_token="")
@@ -24,8 +26,10 @@ def test_auth_node_with_token(monkeypatch: pytest.MonkeyPatch) -> None:
         permissions = []
         extra = {}
 
-    monkeypatch.setattr("src.graph.nodes.auth.JWTService.verify_token", lambda self, token: MockTokenClaims())
-    
+    monkeypatch.setattr(
+        "src.graph.nodes.auth.JWTService.verify_token", lambda self, token: MockTokenClaims()
+    )
+
     state = AgentState(raw_token="fake.token")
     result = auth_node(state)
     assert "auth" in result

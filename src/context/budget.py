@@ -7,6 +7,7 @@ to replicate the context-window visualizer (purple/green/orange/pink bar).
 Sections mirror the UI exactly:
   System prompt | Tool definitions | Rules | Skills | MCP | Subagents | Summary | Conversation
 """
+
 from __future__ import annotations
 
 import tiktoken

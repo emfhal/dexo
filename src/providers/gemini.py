@@ -4,15 +4,18 @@ src/providers/gemini.py
 Google Gemini provider adapter.
 Supports both Google AI Studio (API key) and Vertex AI (project + location).
 """
+
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from langchain_core.language_models import BaseChatModel
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from src.providers.base import LLMProvider
+
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
 
 logger = logging.getLogger(__name__)
 

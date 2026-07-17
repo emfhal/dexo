@@ -4,6 +4,7 @@ src/context/sources/rules.py
 Loads AGENTS.md rules file (global + workspace-scoped).
 Supports a simple include directive to compose from multiple files.
 """
+
 from __future__ import annotations
 
 import logging

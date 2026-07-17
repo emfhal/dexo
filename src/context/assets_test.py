@@ -6,6 +6,7 @@ Tests that verify the assets/ directory structure is valid:
 - All subagent manifests have required fields
 - MCP servers config is valid JSON with required keys
 """
+
 from __future__ import annotations
 
 import json
@@ -25,14 +26,18 @@ class TestSkillAssets:
     def test_skills_directory_exists(self) -> None:
         assert SKILLS_ROOT.is_dir(), f"Skills directory missing: {SKILLS_ROOT}"
 
-    @pytest.mark.parametrize("skill_dir", list(SKILLS_ROOT.iterdir()) if SKILLS_ROOT.exists() else [])
+    @pytest.mark.parametrize(
+        "skill_dir", list(SKILLS_ROOT.iterdir()) if SKILLS_ROOT.exists() else []
+    )
     def test_each_skill_has_skill_md(self, skill_dir: Path) -> None:
         if not skill_dir.is_dir():
             return
         skill_md = skill_dir / "SKILL.md"
         assert skill_md.exists(), f"Missing SKILL.md in {skill_dir}"
 
-    @pytest.mark.parametrize("skill_dir", list(SKILLS_ROOT.iterdir()) if SKILLS_ROOT.exists() else [])
+    @pytest.mark.parametrize(
+        "skill_dir", list(SKILLS_ROOT.iterdir()) if SKILLS_ROOT.exists() else []
+    )
     def test_skill_md_has_valid_frontmatter(self, skill_dir: Path) -> None:
         if not skill_dir.is_dir():
             return

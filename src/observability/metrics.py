@@ -4,6 +4,7 @@ src/observability/metrics.py
 Application-level metrics: LLM token usage, tool calls, memory latency,
 and context budget saturation.
 """
+
 from __future__ import annotations
 
 from opentelemetry import metrics

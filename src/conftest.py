@@ -3,9 +3,9 @@ src/conftest.py
 ──────────────────
 Shared pytest fixtures for all test modules.
 """
+
 from __future__ import annotations
 
-import os
 import pytest
 from langchain_core.messages import HumanMessage
 
@@ -18,6 +18,7 @@ def mock_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("DATABASE_URL", "postgresql+psycopg://test:test@localhost:5432/testdb")
     monkeypatch.setenv("ASSETS_DIR", "src/assets")
     monkeypatch.setenv("LLM_PROVIDER", "ollama")
+
 
 @pytest.fixture
 def mock_auth() -> AuthContext:

@@ -4,6 +4,7 @@ src/providers/providers_test.py
 Unit tests for the LLM provider registry.
 Uses mocking — no real API calls made.
 """
+
 from __future__ import annotations
 
 from typing import Any
@@ -56,7 +57,7 @@ class TestProviderRegistry:
             _make_cfg(
                 LLM_PROVIDER="openai",
                 LLM_PRIMARY_MODEL="gpt-4o",
-                OPENAI_API_KEY="",   # missing
+                OPENAI_API_KEY="",  # missing
             )
 
     @patch("src.providers.ollama.ChatOllama")
@@ -99,8 +100,6 @@ class TestProviderRegistry:
         """If a manifest requests an unconfigured provider, use primary."""
         cfg = _make_cfg()
         registry = ProviderRegistry.from_config(cfg)
-        manifest = {
-            "model": {"provider": "nonexistent", "model": "x"}
-        }
+        manifest = {"model": {"provider": "nonexistent", "model": "x"}}
         with patch("src.providers.ollama.ChatOllama"):
             registry.build_for_subagent(manifest)

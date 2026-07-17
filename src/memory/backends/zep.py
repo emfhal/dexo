@@ -4,15 +4,19 @@ src/memory/backends/zep.py
 Zep adapter: long-term semantic memory, automatic entity extraction,
 and conversation summarization via the Zep cloud/self-hosted API.
 """
+
 from __future__ import annotations
 
 import logging
-from typing import Any, List, Optional
+from typing import TYPE_CHECKING, Any
+
 from zep_python.client import AsyncZep
 from zep_python.types import Message, SessionSearchResult
 
-from src.config import MemoryConfig
 from src.observability.instrumentation import traced_memory
+
+if TYPE_CHECKING:
+    from src.config import MemoryConfig
 
 logger = logging.getLogger(__name__)
 

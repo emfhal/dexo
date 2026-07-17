@@ -7,20 +7,22 @@ and routes model strings to their provider.
 Supports automatic fallback:
   primary provider fails → fallback provider kicks in
 """
+
 from __future__ import annotations
 
 import logging
-from functools import lru_cache
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from langchain_core.language_models import BaseChatModel
-
-from src.config import LLMConfig
 from src.providers.anthropic import AnthropicProvider
-from src.providers.base import LLMProvider
 from src.providers.gemini import GeminiProvider
 from src.providers.ollama import OllamaProvider
 from src.providers.openai import OpenAIProvider
+
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
+
+    from src.config import LLMConfig
+    from src.providers.base import LLMProvider
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +54,7 @@ class ProviderRegistry:
         self._temperature = temperature
 
     @classmethod
-    def from_config(cls, cfg: LLMConfig) -> "ProviderRegistry":
+    def from_config(cls, cfg: LLMConfig) -> ProviderRegistry:
         """Build all available providers from config (skips unconfigured ones)."""
         providers: dict[str, LLMProvider] = {}
 

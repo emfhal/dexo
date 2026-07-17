@@ -7,25 +7,28 @@ Mem0 (user facts) behind a single async interface.
 
 Callers only import MemoryManager — not individual backends.
 """
+
 from __future__ import annotations
 
 import asyncio
 import logging
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from src.config import DatabaseConfig, MemoryConfig
 from src.memory.backends.mem0 import Mem0MemoryBackend
 from src.memory.backends.postgres import PostgresMemoryBackend
 from src.memory.backends.zep import ZepMemoryBackend
 from src.memory.fusion import MemoryFusion
+
+if TYPE_CHECKING:
+    from src.config import DatabaseConfig, MemoryConfig
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class RetrievedMemory:
-    source: str          # "zep" | "mem0"
+    source: str  # "zep" | "mem0"
     content: str
     score: float = 0.0
     metadata: dict[str, Any] = field(default_factory=dict)

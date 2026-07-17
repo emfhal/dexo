@@ -7,6 +7,7 @@ SecureTool base class — wraps every LangChain @tool with:
   • OTEL span emission
   • Structured error handling
 """
+
 from __future__ import annotations
 
 import abc
@@ -83,5 +84,4 @@ class SecureTool(abc.ABC):
                 return {"error": f"Tool execution failed: {exc}"}
 
     @abc.abstractmethod
-    def _execute(self, **kwargs: Any) -> Any:
-        ...
+    def _execute(self, **kwargs: Any) -> Any: ...

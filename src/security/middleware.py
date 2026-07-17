@@ -5,17 +5,21 @@ FastAPI middleware + reusable dependency for Bearer-token authentication.
 Injects RBACContext into the request state so any endpoint/WebSocket
 can access it without re-parsing the token.
 """
+
 from __future__ import annotations
 
 import logging
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated
 
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from src.config import get_settings
 from src.security.jwt import JWTService
 from src.security.rbac import RBACContext
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +64,7 @@ def require_scope(scope: str) -> Callable:
         ):
             ...
     """
-    from typing import Annotated as Ann, Callable  # noqa: PLC0415
+    from typing import Annotated as Ann  # noqa: PLC0415
 
     async def _check(rbac: Ann[RBACContext, Depends(get_current_user)]) -> None:
         if not rbac.has(scope):
@@ -73,10 +77,12 @@ def require_scope(scope: str) -> Callable:
 
 
 # ── Starlette middleware for raw request logging ──────────────────────────────
+
 from starlette.middleware.base import BaseHTTPMiddleware  # noqa: E402
-from starlette.requests import Request as StarletteRequest  # noqa: E402
-from starlette.responses import Response  # noqa: E402
-from typing import Callable  # noqa: E402
+
+if TYPE_CHECKING:
+    from starlette.requests import Request as StarletteRequest
+    from starlette.responses import Response
 
 
 class AuthLoggingMiddleware(BaseHTTPMiddleware):

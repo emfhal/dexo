@@ -5,6 +5,7 @@ Human-in-the-loop tool using LangGraph's interrupt mechanism.
 The src calls this when it needs clarification before proceeding.
 Execution pauses until a human responds via the API.
 """
+
 from __future__ import annotations
 
 from langchain_core.tools import tool

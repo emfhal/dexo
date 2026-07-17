@@ -5,10 +5,10 @@ Chromium browser tool using Playwright for complex, multi-step actions.
 Supports navigating, clicking, filling forms, and reading text.
 Requires human approval since browser actions can be destructive.
 """
+
 from __future__ import annotations
 
 import json
-from typing import Any
 
 from langchain_core.tools import tool
 from playwright.async_api import async_playwright
@@ -31,7 +31,7 @@ async def browser_action(actions_json: str) -> str:
             - {"action": "fill", "selector": "css_selector", "value": "text to type"}
             - {"action": "wait", "timeout": milliseconds}
             - {"action": "extract_text", "selector": "body"}
-          
+
           Example:
           [
             {"action": "goto", "url": "https://example.com/login"},
@@ -51,20 +51,20 @@ async def browser_action(actions_json: str) -> str:
 
     cfg = get_settings().tools
     extracted_data: list[str] = []
-    
+
     try:
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             context = await browser.new_context(
                 user_agent="LangGraph-Agent/2.0 (research browser tool)",
-                record_video_dir="records/"
+                record_video_dir="records/",
             )
             page = await context.new_page()
 
             # Execute actions sequentially
             for step in actions:
                 action_type = step.get("action")
-                
+
                 try:
                     if action_type == "goto":
                         url = step.get("url")
@@ -74,24 +74,24 @@ async def browser_action(actions_json: str) -> str:
                         if not url.startswith(("http://", "https://")):
                             raise ValueError("Only http/https URLs are permitted.")
                         await page.goto(url, timeout=cfg.fetch_timeout_seconds * 1000)
-                    
+
                     elif action_type == "click":
                         selector = step.get("selector")
                         if not selector:
                             raise ValueError("Missing 'selector' for click action.")
                         await page.click(selector, timeout=cfg.fetch_timeout_seconds * 1000)
-                    
+
                     elif action_type == "fill":
                         selector = step.get("selector")
                         value = step.get("value", "")
                         if not selector:
                             raise ValueError("Missing 'selector' for fill action.")
                         await page.fill(selector, value, timeout=cfg.fetch_timeout_seconds * 1000)
-                    
+
                     elif action_type == "wait":
                         timeout = step.get("timeout", 1000)
                         await page.wait_for_timeout(timeout)
-                        
+
                     elif action_type == "extract_text":
                         selector = step.get("selector", "body")
                         element = await page.query_selector(selector)
@@ -100,16 +100,16 @@ async def browser_action(actions_json: str) -> str:
                             extracted_data.append(f"Text from '{selector}':\n{text[:8000]}")
                         else:
                             extracted_data.append(f"Text from '{selector}': Element not found.")
-                    
+
                     else:
                         return f"❌ Unknown action type: '{action_type}'"
-                        
+
                 except Exception as step_exc:
                     await browser.close()
                     return f"❌ Error executing step {step}: {step_exc}"
 
             await browser.close()
-            
+
             if extracted_data:
                 return "\n\n---\n\n".join(extracted_data)
             return "✅ All browser actions executed successfully. (No text was extracted)"

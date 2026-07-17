@@ -7,16 +7,19 @@ Supports: gemma3:27b, gemma3:12b, llama3.2, mistral, qwen2.5-coder …
 Ollama must be running: `ollama serve`
 Pull a model first: `ollama pull gemma4:27b`
 """
+
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import httpx
-from langchain_core.language_models import BaseChatModel
 from langchain_ollama import ChatOllama
 
 from src.providers.base import LLMProvider
+
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +70,9 @@ class OllamaProvider(LLMProvider):
                 # Ollama tags include digest suffix: "gemma3:27b:latest"
                 return any(model in tag for tag in available)
         except Exception:
-            logger.warning("Ollama unreachable at %s — assuming model is available.", self._base_url)
+            logger.warning(
+                "Ollama unreachable at %s — assuming model is available.", self._base_url
+            )
         return True
 
     def is_healthy(self) -> bool:

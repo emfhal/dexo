@@ -4,15 +4,18 @@ src/memory/backends/mem0.py
 Mem0 adapter: persistent user-level facts and preferences.
 Uses mem0's async client for non-blocking retrieval.
 """
+
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from mem0 import AsyncMemoryClient
 
-from src.config import MemoryConfig
 from src.observability.instrumentation import traced_memory
+
+if TYPE_CHECKING:
+    from src.config import MemoryConfig
 
 logger = logging.getLogger(__name__)
 

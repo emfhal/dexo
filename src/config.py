@@ -11,6 +11,7 @@ Provider priority (set LLM_PROVIDER):
   openai    → OpenAI API
   anthropic → Anthropic Claude API
 """
+
 from __future__ import annotations
 
 from functools import lru_cache
@@ -20,10 +21,10 @@ from typing import Literal
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 # ─────────────────────────────────────────────────────────────────────────────
 #  Sub-configs
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 class LLMConfig(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -54,7 +55,7 @@ class LLMConfig(BaseSettings):
     ollama_num_ctx: int = Field(32768, alias="OLLAMA_NUM_CTX")
 
     @model_validator(mode="after")
-    def validate_provider_credentials(self) -> "LLMConfig":
+    def validate_provider_credentials(self) -> LLMConfig:
         """Ensure the selected primary provider has credentials."""
         checks = {
             "openai": self.openai_api_key,
@@ -109,6 +110,7 @@ class AssetsConfig(BaseSettings):
     Paths to all content assets (skills, subagents, rules, prompts, MCP).
     Maps to the assets/ directory tree.
     """
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     assets_dir: str = Field("./src/assets", alias="ASSETS_DIR")
@@ -171,8 +173,10 @@ class ServerConfig(BaseSettings):
 #  Root settings
 # ─────────────────────────────────────────────────────────────────────────────
 
+
 class Settings(BaseSettings):
     """Root settings — composes all sub-configs."""
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     llm: LLMConfig = Field(default_factory=LLMConfig)

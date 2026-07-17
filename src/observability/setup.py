@@ -4,9 +4,11 @@ src/observability/setup.py
 Bootstrap OpenTelemetry once at application startup.
 Supports OTLP (gRPC) and Arize Phoenix as backends.
 """
+
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 from opentelemetry import metrics, trace
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
@@ -20,7 +22,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import ParentBasedTraceIdRatio
 
-from src.config import ObservabilityConfig
+if TYPE_CHECKING:
+    from src.config import ObservabilityConfig
 
 logger = logging.getLogger(__name__)
 

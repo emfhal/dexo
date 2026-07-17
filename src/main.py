@@ -9,20 +9,18 @@ Exposes:
   GET  /health        — liveness probe
   GET  /context/debug — inspect current context for a thread (dev only)
 """
+
 from __future__ import annotations
 
-import logging
 import uuid
-from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Annotated, Any
+from typing import TYPE_CHECKING, Annotated, Any
 
 import structlog
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langchain_core.messages import HumanMessage
-from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from pydantic import BaseModel
 
 from src.config import get_settings
@@ -30,10 +28,14 @@ from src.context.loader import AdvancedContextLoader
 from src.graph.builder import build_graph
 from src.graph.state import AgentState
 from src.memory.manager import MemoryManager
-from src.observability.setup import bootstrap_otel, instrument_fastapi
 from src.observability.logging import configure_logging
+from src.observability.setup import bootstrap_otel, instrument_fastapi
 from src.security.middleware import AuthLoggingMiddleware, get_current_user
-from src.security.rbac import RBACContext
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncGenerator, AsyncIterator
+
+    from src.security.rbac import RBACContext
 
 # Load config early so we fail fast on invalid ENV
 cfg = get_settings()
@@ -41,11 +43,12 @@ configure_logging(cfg.server.log_level, cfg.server.log_pretty)
 
 log = structlog.get_logger()
 
+
 # ── Application State ─────────────────────────────────────────────────────────
 class AppState:
     memory: MemoryManager
     context_loader: AdvancedContextLoader
-    graph: Any   # Compiled LangGraph
+    graph: Any  # Compiled LangGraph
 
 
 app_state = AppState()
@@ -75,7 +78,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         workflow = build_graph(app_state.memory, app_state.context_loader)
         app_state.graph = workflow.compile(
             checkpointer=checkpointer,
-            interrupt_before=["tools"],   # Pause before tool execution for approval
+            interrupt_before=["tools"],  # Pause before tool execution for approval
         )
         log.info("LangGraph compiled with Postgres checkpointer.")
 
@@ -122,7 +125,7 @@ class ChatResponse(BaseModel):
 
 class ResumeRequest(BaseModel):
     thread_id: str
-    resume_value: str   # The human's answer to the interrupt (approval / followup)
+    resume_value: str  # The human's answer to the interrupt (approval / followup)
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
@@ -148,11 +151,15 @@ async def chat(
     config = {"configurable": {"thread_id": thread_id}}
 
     if body.stream:
-        async def event_generator():
+
+        async def event_generator() -> AsyncIterator[str]:
             try:
-                async for event in app_state.graph.astream(initial_state, config=config, stream_mode="updates"):
+                async for event in app_state.graph.astream(
+                    initial_state, config=config, stream_mode="updates"
+                ):
                     # Yield as Server-Sent Event
                     import json
+
                     # We might yield dict directly, but must ensure it's serializable
                     # For simplicity, convert event to a string representation or custom json
                     # We'll yield raw string events for now
@@ -176,7 +183,11 @@ async def chat(
     interrupted = bool(state.tasks)  # Pending tasks = graph is interrupted
 
     last_ai = next(
-        (m for m in reversed(result["messages"]) if hasattr(m, "content") and not hasattr(m, "type")),
+        (
+            m
+            for m in reversed(result["messages"])
+            if hasattr(m, "content") and not hasattr(m, "type")
+        ),
         None,
     )
     response_text = last_ai.content if last_ai else "No response generated."
@@ -195,7 +206,9 @@ async def chat(
         response=response_text if isinstance(response_text, str) else str(response_text),
         context_budget=budget_dict,
         interrupted=interrupted,
-        interrupt_payload=state.tasks[0].interrupts[0].value if interrupted and state.tasks else None,
+        interrupt_payload=state.tasks[0].interrupts[0].value
+        if interrupted and state.tasks
+        else None,
     )
 
 
@@ -209,7 +222,7 @@ async def resume_chat(
     rbac.require("src:write")
 
     config = {"configurable": {"thread_id": body.thread_id}}
-    token = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
+    request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
 
     # Resume the graph by providing the human's response
     result = await app_state.graph.ainvoke(

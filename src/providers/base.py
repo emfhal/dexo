@@ -3,12 +3,14 @@ src/providers/base.py
 ────────────────────────
 Abstract base for all LLM provider adapters.
 """
+
 from __future__ import annotations
 
 import abc
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from langchain_core.language_models import BaseChatModel
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
 
 
 class LLMProvider(abc.ABC):

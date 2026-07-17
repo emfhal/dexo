@@ -4,6 +4,7 @@ src/graph/nodes/auth.py
 Auth node: verifies the JWT, resolves RBAC permissions, and
 injects AuthContext into AgentState before any other node runs.
 """
+
 from __future__ import annotations
 
 import logging

@@ -7,6 +7,7 @@ SSRF-protected web content fetcher.
 - Converts HTML to clean Markdown
 - Enforces per-request timeout
 """
+
 from __future__ import annotations
 
 import ipaddress
@@ -39,9 +40,7 @@ def _check_ssrf(url: str) -> None:
 
     for blocked_cidr in cfg.ssrf_blocked_cidrs:
         if resolved_ip in blocked_cidr:
-            raise ValueError(
-                f"URL resolves to blocked CIDR {blocked_cidr}: {resolved_ip}"
-            )
+            raise ValueError(f"URL resolves to blocked CIDR {blocked_cidr}: {resolved_ip}")
 
 
 @tool

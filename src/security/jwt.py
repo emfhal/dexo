@@ -5,20 +5,22 @@ JWT verification and claims extraction using python-jose.
 Supports both HS256 and RS256. Raises HTTPException on any failure
 so it can be used as a FastAPI dependency directly.
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from fastapi import HTTPException, status
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
-from src.config import SecurityConfig
+if TYPE_CHECKING:
+    from src.config import SecurityConfig
 
 
 class TokenClaims(BaseModel):
-    sub: str                          # user_id
+    sub: str  # user_id
     exp: datetime
     iat: datetime
     roles: list[str] = []

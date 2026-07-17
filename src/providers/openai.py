@@ -3,14 +3,17 @@ src/providers/openai.py
 ──────────────────────────
 OpenAI / Azure OpenAI provider adapter.
 """
+
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from langchain_core.language_models import BaseChatModel
 from langchain_openai import ChatOpenAI
 
 from src.providers.base import LLMProvider
+
+if TYPE_CHECKING:
+    from langchain_core.language_models import BaseChatModel
 
 
 class OpenAIProvider(LLMProvider):
@@ -32,7 +35,4 @@ class OpenAIProvider(LLMProvider):
         )
 
     def supports_model(self, model: str) -> bool:
-        return any(
-            model.startswith(prefix)
-            for prefix in ("gpt-", "o1", "o3", "o4", "text-")
-        )
+        return any(model.startswith(prefix) for prefix in ("gpt-", "o1", "o3", "o4", "text-"))

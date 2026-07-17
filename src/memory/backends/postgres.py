@@ -4,17 +4,21 @@ src/memory/backends/postgres.py
 Postgres-backed LangGraph checkpointer + message store.
 Uses langgraph-checkpoint-postgres with connection pooling via psycopg3.
 """
+
 from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
+from typing import TYPE_CHECKING
 
 import psycopg
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from psycopg_pool import AsyncConnectionPool
 
-from src.config import DatabaseConfig
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    from src.config import DatabaseConfig
 
 logger = logging.getLogger(__name__)
 
@@ -64,5 +68,5 @@ class PostgresMemoryBackend:
 
         async with await psycopg.AsyncConnection.connect(self._dsn, autocommit=True) as conn:
             saver = AsyncPostgresSaver(conn)
-            await saver.setup()           # Idempotent DDL migrations
+            await saver.setup()  # Idempotent DDL migrations
             yield saver

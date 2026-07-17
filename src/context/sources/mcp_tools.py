@@ -5,6 +5,7 @@ MCP (Model Context Protocol) client adapter.
 Reads a JSON config file listing MCP servers, connects to each,
 and discovers available tools at runtime.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -71,19 +72,18 @@ class MCPToolDiscovery:
             args=server.get("args", []),
             env=server.get("env"),
         )
-        async with stdio_client(params) as (read, write):
-            async with ClientSession(read, write) as session:
-                await session.initialize()
-                tools_result = await session.list_tools()
-                return [
-                    {
-                        "server": server["name"],
-                        "name": tool.name,
-                        "description": tool.description,
-                        "input_schema": tool.inputSchema,
-                    }
-                    for tool in tools_result.tools
-                ]
+        async with stdio_client(params) as (read, write), ClientSession(read, write) as session:
+            await session.initialize()
+            tools_result = await session.list_tools()
+            return [
+                {
+                    "server": server["name"],
+                    "name": tool.name,
+                    "description": tool.description,
+                    "input_schema": tool.inputSchema,
+                }
+                for tool in tools_result.tools
+            ]
 
     @property
     def tools(self) -> list[dict[str, Any]]:

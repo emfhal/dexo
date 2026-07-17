@@ -3,6 +3,7 @@ src/memory/fusion.py
 ───────────────────────
 Multi-source memory result merger with de-duplication and score-based ranking.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -24,20 +25,20 @@ class MemoryFusion:
     """
 
     SOURCE_WEIGHTS: dict[str, float] = {
-        "zep": 0.6,   # Semantic recency wins
+        "zep": 0.6,  # Semantic recency wins
         "mem0": 0.4,  # User facts supplement
     }
 
     def merge(
         self,
-        memories: list["RetrievedMemory"],
+        memories: list[RetrievedMemory],
         top_k: int = 8,
-    ) -> list["RetrievedMemory"]:
+    ) -> list[RetrievedMemory]:
         if not memories:
             return []
 
         seen: set[str] = set()
-        unique: list["RetrievedMemory"] = []
+        unique: list[RetrievedMemory] = []
 
         for m in memories:
             key = self._content_hash(m.content)

@@ -5,6 +5,7 @@ Role-Based Access Control registry.
 Maps roles → sets of scopes, and provides a permission checker
 that can be used as a FastAPI dependency or called inside graph nodes.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field

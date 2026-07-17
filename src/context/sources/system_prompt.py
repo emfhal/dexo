@@ -4,6 +4,7 @@ src/context/sources/system_prompt.py
 Jinja2-based system prompt builder.
 Renders a base template, injecting runtime context (user, permissions, date).
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime

@@ -15,25 +15,27 @@ Sources:
   - MCP tools      → src/assets/mcp/servers.json
   - Summary        → Zep conversation summary
 """
+
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
-from src.config import AssetsConfig
 from src.context.budget import BudgetManager
 from src.context.sources.mcp_tools import MCPToolDiscovery
 from src.context.sources.rules import load_rules
 from src.context.sources.skills import load_skills
 from src.graph.state import AgentState, LoadedContext
-from src.memory.manager import MemoryManager
 from src.observability.instrumentation import traced_node
 from src.observability.metrics import context_tokens_histogram
+
+if TYPE_CHECKING:
+    from src.config import AssetsConfig
+    from src.memory.manager import MemoryManager
 
 logger = logging.getLogger(__name__)
 
@@ -122,7 +124,7 @@ class AdvancedContextLoader:
         # ── ① System prompt ───────────────────────────────────────────────────
         memories_for_prompt = [
             {"source": m["source"], "content": m["content"]}
-            for m in state.retrieved_memories[:5]   # Top 5 most relevant
+            for m in state.retrieved_memories[:5]  # Top 5 most relevant
         ]
         system_prompt = self._render_prompt(
             user_id=auth.user_id,
@@ -141,7 +143,9 @@ class AdvancedContextLoader:
         raw_skills = self._skills_cache or load_skills(self._cfg.skills_dir)
         injected_skills: dict[str, str] = {}
         for skill in raw_skills:
-            tokens_needed = budget.add("skills", skill["body"]) if budget.remaining() > 400 else None
+            tokens_needed = (
+                budget.add("skills", skill["body"]) if budget.remaining() > 400 else None
+            )
             if tokens_needed is not None:
                 injected_skills[skill["name"]] = skill["body"]
             else:
@@ -157,8 +161,7 @@ class AdvancedContextLoader:
         subagents = self._subagents_cache or _load_subagent_manifests(self._cfg.subagents_dir)
         # Summarise for context (don't inject full skill bodies to save tokens)
         subagent_summaries = [
-            {"name": s["name"], "description": s.get("description", "")}
-            for s in subagents
+            {"name": s["name"], "description": s.get("description", "")} for s in subagents
         ]
         if subagent_summaries and budget.remaining() > 200:
             budget.add("subagents", json.dumps(subagent_summaries))
@@ -204,6 +207,7 @@ class AdvancedContextLoader:
     def _render_prompt(self, **kwargs: Any) -> str:
         """Render system_prompt.j2 from src/assets/prompts/."""
         from datetime import UTC, datetime
+
         try:
             template = self._jinja_env.get_template("system_prompt.j2")
             return template.render(

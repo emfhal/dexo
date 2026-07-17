@@ -5,30 +5,32 @@ Compiles the LangGraph StateGraph with all nodes, edges,
 conditional routing, and the Postgres checkpointer.
 
 Graph topology:
-  [START] → auth → memory_retrieve → context_loader → llm → tools → llm → ...
+  [START] → auth → memory_retrieve → context_loader → generate → tools → generate → ...
                                                            ↘ [END] (no tool calls)
 """
+
 from __future__ import annotations
 
 import functools
 import logging
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from langchain_core.messages import AIMessage
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from src.config import get_settings
-from src.context.loader import AdvancedContextLoader
 from src.graph.nodes.auth import auth_node
 from src.graph.nodes.llm import llm_node
 from src.graph.state import AgentState
-from src.memory.manager import MemoryManager
 from src.tools.ask_followup import ask_followup
+from src.tools.browser import browser_action
 from src.tools.fetch_website import fetch_website
 from src.tools.read_skill import read_skill
 from src.tools.run_command import run_command
-from src.tools.browser import browser_action
+
+if TYPE_CHECKING:
+    from src.context.loader import AdvancedContextLoader
+    from src.memory.manager import MemoryManager
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +73,7 @@ async def _memory_retrieve_node(state: AgentState, memory: MemoryManager) -> dic
     )
     return {
         "retrieved_memories": [
-            {"source": m.source, "content": m.content, "score": m.score}
-            for m in memories
+            {"source": m.source, "content": m.content, "score": m.score} for m in memories
         ]
     }
 
@@ -83,9 +84,7 @@ async def _memory_store_node(state: AgentState, memory: MemoryManager) -> dict[s
         return {}
 
     # Find last human + AI message pair
-    last_ai = next(
-        (m for m in reversed(state.messages) if isinstance(m, AIMessage)), None
-    )
+    last_ai = next((m for m in reversed(state.messages) if isinstance(m, AIMessage)), None)
     last_human = next(
         (m.content for m in reversed(state.messages) if hasattr(m, "type") and m.type == "human"),
         None,
@@ -96,7 +95,9 @@ async def _memory_store_node(state: AgentState, memory: MemoryManager) -> dict[s
             user_id=state.auth.user_id,
             session_id=state.auth.session_id,
             human_message=last_human,
-            ai_message=last_ai.content if isinstance(last_ai.content, str) else str(last_ai.content),
+            ai_message=last_ai.content
+            if isinstance(last_ai.content, str)
+            else str(last_ai.content),
         )
     return {}
 
@@ -111,14 +112,14 @@ def build_graph(memory: MemoryManager, context_loader: AdvancedContextLoader) ->
     # ── Bind dependencies to nodes ────────────────────────────────────────────
     memory_retrieve = functools.partial(_memory_retrieve_node, memory=memory)
     memory_store = functools.partial(_memory_store_node, memory=memory)
-    llm = functools.partial(llm_node, tools=AGENT_TOOLS)
+    generate = functools.partial(llm_node, tools=AGENT_TOOLS)
     tool_node = ToolNode(AGENT_TOOLS)
 
     # ── Register nodes ────────────────────────────────────────────────────────
     workflow.add_node("auth", auth_node)
     workflow.add_node("memory_retrieve", memory_retrieve)
     workflow.add_node("context_loader", context_loader)
-    workflow.add_node("llm", llm)
+    workflow.add_node("generate", generate)
     workflow.add_node("tools", tool_node)
     workflow.add_node("memory_store", memory_store)
 
@@ -126,17 +127,17 @@ def build_graph(memory: MemoryManager, context_loader: AdvancedContextLoader) ->
     workflow.add_edge(START, "auth")
     workflow.add_edge("auth", "memory_retrieve")
     workflow.add_edge("memory_retrieve", "context_loader")
-    workflow.add_edge("context_loader", "llm")
+    workflow.add_edge("context_loader", "generate")
 
-    # Conditional: LLM → tools or END
+    # Conditional: Generate → tools or END
     workflow.add_conditional_edges(
-        "llm",
+        "generate",
         _should_continue,
         {"tools": "tools", "end": "memory_store"},
     )
 
-    # Tools always loop back to LLM
-    workflow.add_edge("tools", "llm")
+    # Tools always loop back to Generate
+    workflow.add_edge("tools", "generate")
 
     # After storing memory, we're done
     workflow.add_edge("memory_store", END)

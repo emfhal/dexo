@@ -4,15 +4,17 @@ src/graph/state.py
 Canonical state definition for the LangGraph src.
 Everything that flows through the graph lives here.
 """
+
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Annotated, Any, Literal
-from uuid import UUID
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
-from langchain_core.messages import AnyMessage
 from langgraph.graph.message import add_messages
 from pydantic import BaseModel, Field
+
+if TYPE_CHECKING:
+    from langchain_core.messages import AnyMessage
 
 
 class Permission(BaseModel):
