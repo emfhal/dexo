@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 from typing import TypedDict
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 logger = logging.getLogger(__name__)
 

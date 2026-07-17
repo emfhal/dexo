@@ -28,7 +28,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def _load_project_metadata() -> dict[str, str]:
+from typing import Any
+
+def _load_project_metadata() -> dict[str, Any]:
     path = Path(__file__).parent.parent / "pyproject.toml"
     if path.exists():
         with open(path, "rb") as f:
