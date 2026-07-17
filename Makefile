@@ -30,6 +30,7 @@ help: ## Show this help message
 # ── Installation ──────────────────────────────────────────────────────────────
 install: ## Create venv and install all deps (including dev) via uv
 	$(UV) sync --all-groups
+	git config core.hooksPath .githooks
 	@echo "✅  Virtual environment ready at .venv/"
 
 sync: ## Sync deps without re-locking (faster after pyproject.toml changes)
