@@ -14,8 +14,10 @@ Provider priority (set LLM_PROVIDER):
 
 from __future__ import annotations
 
+import tomllib
 from functools import lru_cache
 from ipaddress import IPv4Network
+from pathlib import Path
 from typing import Literal
 
 from pydantic import Field, PostgresDsn, field_validator, model_validator
@@ -24,6 +26,30 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # ─────────────────────────────────────────────────────────────────────────────
 #  Sub-configs
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+def _load_project_metadata() -> dict[str, str]:
+    path = Path(__file__).parent.parent / "pyproject.toml"
+    if path.exists():
+        with open(path, "rb") as f:
+            data = tomllib.load(f)
+            return data.get("project", {})
+    return {}
+
+
+_project_meta = _load_project_metadata()
+
+
+class ProjectConfig(BaseSettings):
+    title: str = (
+        _project_meta.get("name", "dexo").capitalize() + " - Enterprise LangGraph Orchestrator"
+    )
+    version: str = _project_meta.get("version", "2.0.0")
+    description: str = _project_meta.get(
+        "description", "A robust, frontier-grade multi-agent architecture."
+    )
+    contact_name: str = "Dexo"
+    contact_url: str = "http://127.0.0.1:8081"
 
 
 class LLMConfig(BaseSettings):
@@ -179,6 +205,7 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
+    project: ProjectConfig = Field(default_factory=ProjectConfig)
     llm: LLMConfig = Field(default_factory=LLMConfig)
     database: DatabaseConfig = Field(default_factory=DatabaseConfig)
     memory: MemoryConfig = Field(default_factory=MemoryConfig)

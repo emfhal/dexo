@@ -12,6 +12,7 @@ Exposes:
 
 from __future__ import annotations
 
+import os
 import uuid
 from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, Annotated, Any
@@ -19,7 +20,9 @@ from typing import TYPE_CHECKING, Annotated, Any
 import structlog
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
 from fastapi.responses import StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 
@@ -91,10 +94,39 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 # ── FastAPI App ───────────────────────────────────────────────────────────────
 app = FastAPI(
-    title="LangGraph Agent API",
-    version="2.0.0",
+    title=cfg.project.title,
+    version=cfg.project.version,
     lifespan=lifespan,
+    description=cfg.project.description,
+    contact={
+        "name": cfg.project.contact_name,
+        "url": cfg.project.contact_url,
+    },
 )
+
+# Mount assets directory to serve the logo
+
+
+assets_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
+if os.path.exists(assets_dir):
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+
+def custom_openapi() -> dict[str, Any]:
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=cfg.project.title,
+        version=cfg.project.version,
+        description=cfg.project.description,
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {"url": "/assets/logo.svg"}
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 
 app.add_middleware(AuthLoggingMiddleware)
 app.add_middleware(
@@ -242,7 +274,7 @@ async def resume_chat(
 
 @app.get("/health")
 async def health() -> dict[str, str]:
-    return {"status": "ok", "version": "2.0.0"}
+    return {"status": "ok", "version": cfg.project.version}
 
 
 @app.get("/context/debug/{thread_id}")

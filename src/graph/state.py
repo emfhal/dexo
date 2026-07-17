@@ -8,12 +8,11 @@ Everything that flows through the graph lives here.
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Annotated, Any, Literal
+from typing import Annotated, Any, Literal
 
+from langchain_core.messages import AnyMessage  # noqa: TC002
 from langgraph.graph.message import add_messages
 from pydantic import BaseModel, ConfigDict, Field
-
-from langchain_core.messages import AnyMessage
 
 
 class Permission(BaseModel):
