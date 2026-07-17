@@ -1,22 +1,38 @@
-# Dexo - Enterprise LangGraph Orchestrator
+# Dexo - Enterprise Agentic Orchestrator
 
 <div align="center">
-  <img src="./assets/logo.svg" width="200" alt="Dexo Logo" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/logo.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/logo-black.svg">
+    <img alt="Dexo Logo" src="./assets/logo.svg" width="200">
+  </picture>
 </div>
 
 A robust, frontier-grade multi-agent architecture powered by LangGraph, FastAPI, and OpenTelemetry. Designed for high scalability, observability, and modular tool integration. The codebase follows standard Python packaging (`src/` layout) and is deployment-ready for Vercel Serverless Functions.
 
-## 🚀 Features
+## 🚀 Why Dexo?
 
-- **Multi-Provider LLM Registry**: Seamless switching between Ollama (local), Gemini, OpenAI, and Anthropic. Configurable fallback models for robust execution.
-- **Advanced Context & Memory Fusion**: 
-  - **Zep**: Semantic long-term memory, conversation summarization, and entity extraction.
-  - **Mem0**: Personalization and persistent user-fact profiling.
-  - **Postgres (pgvector)**: Fast, local vector searches and checkpoint state persistence.
-- **Modular Asset Architecture**: Skills, Subagents, Rules, and Prompts are cleanly isolated in the `assets/` directory.
-- **Enterprise Observability**: Integrated OpenTelemetry (OTLP) tracking for LangChain/LangGraph instrumentations and HTTP requests.
-- **Secure Sandboxing**: JWT-based Authentication & RBAC out of the box. Configurable SSRF protection and restricted shell command execution (`COMMAND_ALLOWLIST`).
-- **Slim Serverless Vercel Deployment**: Pre-configured `api/index.py` entrypoint and `vercel.json` routing.
+Many people build "toy" AI agents that only work locally in a Jupyter notebook, but Dexo is engineered as a deeply robust, deployable microservices architecture. Here is a breakdown of why this is a frontier-grade, production-ready AI platform:
+
+### 1. Enterprise Architecture & Speed
+- **uv Native**: By managing the Python ecosystem entirely with uv, dependency resolution, locking, and syncing are blazingly fast and perfectly reproducible.
+- **FastAPI + Serverless Ready**: The core orchestrator is exposed via a high-performance ASGI FastAPI server that supports Server-Sent Events (SSE) for token streaming. It's built exactly how Vercel or AWS Lambda expects modern Python microservices to look.
+
+### 2. Multi-Provider & Hybrid Memory
+- **Model Agnostic**: Instead of locking into one ecosystem, Dexo gracefully supports OpenAI, Anthropic, Google Gemini, and even local fallback models via Ollama.
+- **Long-term Semantic Memory**: By integrating Zep, Mem0, and Postgres with pgvector, Dexo has the ability to maintain state, remember past conversations, and perform semantic vector searches natively.
+
+### 3. True Production Observability & Security
+- **OpenTelemetry & Jaeger**: Dexo emits full distributed traces via OTLP, allowing you to visually debug exactly what LangGraph and the LLMs are doing in the Jaeger UI.
+- **RBAC (Role-Based Access Control)**: The JWT security middleware ensures API endpoints enforce strict role-based scopes (e.g. `src:write`).
+
+### 4. Advanced Tooling (MCP & Playwright)
+- **Model Context Protocol (MCP)**: Dexo interfaces with standardized MCP servers, meaning it can securely interact with filesystems, Git, or external APIs using the exact same standard that Claude Desktop uses.
+- **Agentic Browsing**: With Playwright built directly into the Dockerfile, Dexo has the capacity to spin up headless Chromium instances and actually navigate the web to perform research.
+
+### 5. World-Class CI/CD Pipeline
+- **Docker & GitHub Container Registry**: Infrastructure automatically builds Docker images, runs them through the Trivy Vulnerability Scanner to guarantee enterprise security compliance, and publishes them to GHCR.
+- **Developer Ergonomics**: The Makefile abstracts all the complexity away, and the NPM CLI Wrapper (`dexo start --user "..."`) makes consuming the agent as easy as running a native terminal command.
 
 ## 🛠️ Tech Stack
 

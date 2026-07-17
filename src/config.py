@@ -44,7 +44,7 @@ _project_meta = _load_project_metadata()
 
 class ProjectConfig(BaseSettings):
     title: str = (
-        _project_meta.get("name", "dexo").capitalize() + " - Enterprise LangGraph Orchestrator"
+        _project_meta.get("name", "dexo").capitalize() + " - Enterprise Agentic Orchestrator"
     )
     version: str = _project_meta.get("version", "2.0.0")
     description: str = _project_meta.get(
