@@ -34,6 +34,9 @@ jobs:
       - name: Static Type Checking
         run: make typecheck
 
+      - name: Install Playwright Browsers
+        run: make playwright-install
+
       - name: Run Tests
         run: make test
 
