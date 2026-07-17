@@ -150,7 +150,7 @@ class ToolConfig(BaseSettings):
 
     @field_validator("ssrf_blocked_cidrs", mode="before")
     @classmethod
-    def parse_cidrs(cls, v: str | list) -> list[IPv4Network]:
+    def parse_cidrs(cls, v: str | list) -> list[IPv4Network]:  # type: ignore[type-arg]
         if isinstance(v, str):
             return [IPv4Network(cidr.strip()) for cidr in v.split(",")]
         return [IPv4Network(cidr) if isinstance(cidr, str) else cidr for cidr in v]

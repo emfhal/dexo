@@ -21,7 +21,7 @@ def read_skill(skill_name: str) -> str:
     Args:
         skill_name: The exact name of the skill as declared in its SKILL.md frontmatter.
     """
-    cfg = get_settings().context
+    cfg = get_settings().assets
     skills = load_skills(cfg.skills_dir)
 
     for skill in skills:

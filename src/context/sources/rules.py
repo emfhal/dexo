@@ -33,10 +33,10 @@ def load_rules(rules_file: str) -> str:
 
 
 def _resolve_includes(content: str, base: Path) -> str:
-    def replace_include(m: re.Match) -> str:
+    def replace_include(m: re.Match) -> str:  # type: ignore[type-arg]
         included_path = base / m.group(1).strip()
         if included_path.exists():
-            return included_path.read_text(encoding="utf-8")
+            return included_path.read_text(encoding="utf-8")  # type: ignore[no-any-return]
         logger.warning("!include target not found: %s", included_path)
         return ""
 

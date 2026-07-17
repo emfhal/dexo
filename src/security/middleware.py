@@ -53,7 +53,7 @@ async def get_current_user(
     return context
 
 
-def require_scope(scope: str) -> Callable:
+def require_scope(scope: str) -> Callable:  # type: ignore[type-arg]
     """
     Factory that produces a dependency enforcing a specific scope.
 
@@ -73,7 +73,7 @@ def require_scope(scope: str) -> Callable:
                 detail=f"Scope '{scope}' required.",
             )
 
-    return Depends(_check)
+    return Depends(_check)  # type: ignore[no-any-return]
 
 
 # ── Starlette middleware for raw request logging ──────────────────────────────
@@ -88,7 +88,7 @@ if TYPE_CHECKING:
 class AuthLoggingMiddleware(BaseHTTPMiddleware):
     """Logs every request with user identity if authenticated."""
 
-    async def dispatch(self, request: StarletteRequest, call_next: Callable) -> Response:
+    async def dispatch(self, request: StarletteRequest, call_next: Callable) -> Response:  # type: ignore[type-arg]
         user_id = "anonymous"
         auth_header = request.headers.get("Authorization", "")
         if auth_header.startswith("Bearer "):
@@ -101,4 +101,4 @@ class AuthLoggingMiddleware(BaseHTTPMiddleware):
 
         logger.info("%s %s user=%s", request.method, request.url.path, user_id)
         response = await call_next(request)
-        return response
+        return response  # type: ignore[no-any-return]

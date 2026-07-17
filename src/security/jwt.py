@@ -12,7 +12,7 @@ from datetime import UTC, datetime, timedelta
 from typing import TYPE_CHECKING, Any
 
 from fastapi import HTTPException, status
-from jose import JWTError, jwt
+from jose import JWTError, jwt  # type: ignore[import-untyped]
 from pydantic import BaseModel
 
 if TYPE_CHECKING:
@@ -51,7 +51,7 @@ class JWTService:
             "scopes": scopes or [],
             **(extra or {}),
         }
-        return jwt.encode(payload, self._secret, algorithm=self._algo)
+        return jwt.encode(payload, self._secret, algorithm=self._algo)  # type: ignore[no-any-return]
 
     # ── Decoding / Verification ───────────────────────────────────────────────
     def verify_token(self, token: str) -> TokenClaims:

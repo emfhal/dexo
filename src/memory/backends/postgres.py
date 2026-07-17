@@ -67,6 +67,6 @@ class PostgresMemoryBackend:
             raise RuntimeError("PostgresMemoryBackend.connect() must be called first.")
 
         async with await psycopg.AsyncConnection.connect(self._dsn, autocommit=True) as conn:
-            saver = AsyncPostgresSaver(conn)
+            saver = AsyncPostgresSaver(conn)  # type: ignore[arg-type]
             await saver.setup()  # Idempotent DDL migrations
             yield saver

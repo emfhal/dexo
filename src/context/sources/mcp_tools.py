@@ -60,7 +60,7 @@ class MCPToolDiscovery:
             if isinstance(result, Exception):
                 logger.error("MCP server '%s' discovery failed: %s", server["name"], result)
             else:
-                all_tools.extend(result)
+                all_tools.extend(result)  # type: ignore[arg-type]
 
         logger.info("Discovered %d tools across %d MCP servers.", len(all_tools), len(servers))
         self._tools = all_tools

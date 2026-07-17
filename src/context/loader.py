@@ -87,7 +87,7 @@ class AdvancedContextLoader:
 
         # Warm caches (populated by warm_up())
         self._rules_cache: str | None = None
-        self._skills_cache: list | None = None
+        self._skills_cache: list | None = None  # type: ignore[type-arg]
         self._subagents_cache: list[dict[str, Any]] | None = None
 
     # ── Warm-up ───────────────────────────────────────────────────────────────

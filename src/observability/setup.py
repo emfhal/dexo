@@ -78,7 +78,7 @@ def bootstrap_otel(cfg: ObservabilityConfig) -> None:
     # ── Optional: Arize Phoenix ───────────────────────────────────────────────
     if getattr(cfg, "phoenix_api_key", None):
         try:
-            import phoenix as px
+            import phoenix as px  # type: ignore[import-not-found]
 
             px.launch_app()
             logger.info("Arize Phoenix connected.")

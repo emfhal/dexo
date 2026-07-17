@@ -23,7 +23,7 @@ _env = Environment(
 def render_system_prompt(
     user_id: str,
     roles: list[str],
-    extra: dict | None = None,
+    extra: dict | None = None,  # type: ignore[type-arg]
 ) -> str:
     """
     Renders the system prompt template with runtime values.

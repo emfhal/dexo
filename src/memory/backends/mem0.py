@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING, Any
 
-from mem0 import AsyncMemoryClient
+from mem0 import AsyncMemoryClient  # type: ignore[import-untyped]
 
 from src.observability.instrumentation import traced_memory
 
@@ -67,13 +67,13 @@ class Mem0MemoryBackend:
             return []
         results = await self._client.search(query=query, user_id=user_id, limit=limit)
         logger.debug("Mem0 search '%s' → %d results for %s", query[:40], len(results), user_id)
-        return results
+        return results  # type: ignore[no-any-return]
 
     async def get_all(self, user_id: str) -> list[dict[str, Any]]:
         """Retrieve all stored facts for a user."""
         if not self._client:
             return []
-        return await self._client.get_all(user_id=user_id)
+        return await self._client.get_all(user_id=user_id)  # type: ignore[no-any-return]
 
     async def delete_all(self, user_id: str) -> None:
         """GDPR-style: delete all memories for a user."""

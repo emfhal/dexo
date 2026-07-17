@@ -60,7 +60,7 @@ class ZepMemoryBackend:
             Message(role="human", content=human_message),
             Message(role="ai", content=ai_message),
         ]
-        await self._client.memory.add_memory(session_id, messages=messages)
+        await self._client.memory.add_memory(session_id, messages=messages)  # type: ignore[attr-defined]
 
     # ── Read: Semantic Search ────────────────────────────────────────────────
     @traced_memory("zep")
@@ -70,22 +70,22 @@ class ZepMemoryBackend:
         query: str,
         limit: int = 5,
     ) -> list[SessionSearchResult]:
-        results = await self._client.memory.search_memory(
+        results = await self._client.memory.search_memory(  # type: ignore[attr-defined]
             session_id=session_id,
             text=query,
             limit=limit,
         )
         logger.debug("Zep search '%s' → %d results", query[:40], len(results))
-        return results
+        return results  # type: ignore[no-any-return]
 
     # ── Read: Summary ────────────────────────────────────────────────────────
     async def get_summary(self, session_id: str) -> str:
-        memory = await self._client.memory.get_memory(session_id)
+        memory = await self._client.memory.get_memory(session_id)  # type: ignore[attr-defined]
         return memory.summary.content if memory and memory.summary else ""
 
     # ── Read: Entity Context ─────────────────────────────────────────────────
     async def get_entity_context(self, session_id: str) -> list[dict[str, Any]]:
-        memory = await self._client.memory.get_memory(session_id)
+        memory = await self._client.memory.get_memory(session_id)  # type: ignore[attr-defined]
         if not memory or not memory.facts:
             return []
         return [{"fact": fact} for fact in memory.facts]

@@ -34,7 +34,7 @@ def configure_logging(log_level: str, pretty: bool = True) -> None:
     structlog.configure(
         processors=[
             structlog.stdlib.filter_by_level,
-            *processors,
+            *processors,  # type: ignore[list-item]
         ],
         wrapper_class=structlog.stdlib.BoundLogger,
         logger_factory=structlog.stdlib.LoggerFactory(),

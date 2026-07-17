@@ -67,7 +67,7 @@ async def _memory_retrieve_node(state: AgentState, memory: MemoryManager) -> dic
         return {}
 
     memories = await memory.retrieve(
-        query=last_human,
+        query=last_human,  # type: ignore[arg-type]
         user_id=state.auth.user_id,
         session_id=state.auth.session_id,
     )
@@ -94,7 +94,7 @@ async def _memory_store_node(state: AgentState, memory: MemoryManager) -> dict[s
         await memory.store_turn(
             user_id=state.auth.user_id,
             session_id=state.auth.session_id,
-            human_message=last_human,
+            human_message=last_human,  # type: ignore[arg-type]
             ai_message=last_ai.content
             if isinstance(last_ai.content, str)
             else str(last_ai.content),

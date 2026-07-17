@@ -132,7 +132,7 @@ async def _invoke_with_fallback(
     On rate-limit or connection error, switches to fallback provider.
     """
     try:
-        return await primary_llm.ainvoke(messages)
+        return await primary_llm.ainvoke(messages)  # type: ignore[no-any-return]
     except Exception as exc:
         exc_str = str(exc).lower()
         is_retriable = any(
