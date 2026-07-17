@@ -1,11 +1,11 @@
 {
   "name": "@emfhal/dexo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NPM CLI wrapper for Dexo LangGraph Agent",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "dexo": "./bin/dexo.js"
+    "dexo": "bin/dexo.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/emfhal/dexo.git"
+    "url": "git+https://github.com/emfhal/dexo.git"
   },
   "keywords": [
     "ai",
