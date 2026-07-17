@@ -32,7 +32,7 @@ def _load_project_metadata() -> dict[str, Any]:
     if path.exists():
         with open(path, "rb") as f:
             data = tomllib.load(f)
-            return cast("dict[str, Any]", data.get("project", {}))  # type: ignore[no-any-return]
+            return cast("dict[str, Any]", data.get("project", {}))
     return {}
 
 
