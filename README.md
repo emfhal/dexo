@@ -1,4 +1,4 @@
-# Dexo - Enterprise Agentic Orchestrator
+# Dexo - Multi-Agent Orchestration Architecture
 
 <div align="center">
   <picture>
