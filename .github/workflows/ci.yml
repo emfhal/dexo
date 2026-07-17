@@ -127,6 +127,7 @@ jobs:
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             npm publish
           else
+            npm version $(node -p "require('./package.json').version")-test.${{ github.run_number }} --no-git-tag-version
             npm publish --tag test
           fi
         working-directory: ./cli
