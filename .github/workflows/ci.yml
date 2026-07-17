@@ -40,6 +40,16 @@ jobs:
       - name: Run Tests
         run: make test
 
+      - name: Upload Playwright artifacts
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14
+
   docker-build:
     name: Build & Scan Docker Image
     needs: code-quality
