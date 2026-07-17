@@ -18,7 +18,7 @@ import tomllib
 from functools import lru_cache
 from ipaddress import IPv4Network
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from pydantic import Field, PostgresDsn, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -32,7 +32,7 @@ def _load_project_metadata() -> dict[str, Any]:
     if path.exists():
         with open(path, "rb") as f:
             data = tomllib.load(f)
-            return data.get("project", {})
+            return cast(dict[str, Any], data.get("project", {}))
     return {}
 
 
